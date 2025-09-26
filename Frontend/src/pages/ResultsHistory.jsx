@@ -16,7 +16,7 @@ const ResultsHistory = () => {
         const user = JSON.parse(localStorage.getItem("user")); // convert string → object
         const userId = user._id;
         const res = await axios.get(
-          `http://localhost:4000/api/quiz/results/${userId}`
+          `https://quiz-master-j8er.onrender.com/api/quiz/results/${userId}`
         );
         setResults(res.data);
         setLoading(false);

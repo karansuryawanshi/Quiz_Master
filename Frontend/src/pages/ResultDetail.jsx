@@ -12,7 +12,7 @@ const ResultDetail = () => {
     const fetchResult = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/quiz/result/${resultId}`
+          `https://quiz-master-j8er.onrender.com/api/quiz/result/${resultId}`
         );
         setResult(res.data);
         setLoading(false);

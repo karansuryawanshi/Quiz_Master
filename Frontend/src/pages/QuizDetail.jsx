@@ -24,9 +24,12 @@ function QuizDetail() {
   // Load questions
   useEffect(() => {
     const fetchQuestions = async () => {
-      const res = await axios.get(`http://localhost:4000/api/questions/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+        `https://quiz-master-j8er.onrender.com/api/questions/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setQuestions(res.data);
     };
     fetchQuestions();
@@ -42,7 +45,7 @@ function QuizDetail() {
       }
 
       const res = await axios.post(
-        `http://localhost:4000/api/questions/bulk/${id}`,
+        `https://quiz-master-j8er.onrender.com/api/questions/bulk/${id}`,
         { questions: parsed },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -73,7 +76,7 @@ function QuizDetail() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/questions/${id}`,
+        `https://quiz-master-j8er.onrender.com/api/questions/${id}`,
         form,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -90,9 +93,12 @@ function QuizDetail() {
 
   const handleDelete = async (qid) => {
     try {
-      await axios.delete(`http://localhost:4000/api/questions/${qid}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `https://quiz-master-j8er.onrender.com/api/questions/${qid}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setQuestions(questions.filter((q) => q._id !== qid));
       toast.success("Question deleted!");
     } catch (err) {
@@ -113,7 +119,7 @@ function QuizDetail() {
   const handleEditSave = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:4000/api/questions/${editId}`,
+        `https://quiz-master-j8er.onrender.com/api/questions/${editId}`,
         editForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );

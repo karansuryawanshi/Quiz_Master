@@ -19,9 +19,12 @@ function Dashboard() {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/quiz", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "https://quiz-master-j8er.onrender.com/api/quiz",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setQuizzes(res.data);
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -36,9 +39,13 @@ function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4000/api/quiz", form, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.post(
+        "https://quiz-master-j8er.onrender.com/api/quiz",
+        form,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       toast("Quiz Created!");
       setQuizzes([...quizzes, res.data]);
       setForm({ title: "", description: "", timeLimit: "" });

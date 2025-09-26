@@ -14,7 +14,7 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://quiz-master-j8er.onrender.com/api/auth/login",
         form
       );
 
@@ -22,9 +22,12 @@ function Login() {
       localStorage.setItem("token", res.data.token);
 
       // Fetch user details using token
-      const userRes = await axios.get("http://localhost:4000/api/auth/me", {
-        headers: { Authorization: `Bearer ${res.data.token}` },
-      });
+      const userRes = await axios.get(
+        "https://quiz-master-j8er.onrender.com/api/auth/me",
+        {
+          headers: { Authorization: `Bearer ${res.data.token}` },
+        }
+      );
 
       // Save user details in localStorage
       localStorage.setItem("user", JSON.stringify(userRes.data));

@@ -18,7 +18,7 @@ const QuizAttempt = () => {
     const fetchQuiz = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/quiz/${quizId}/questions`
+          `https://quiz-master-j8er.onrender.com/api/quiz/${quizId}/questions`
         );
         setQuiz(res.data);
         setTimeLeft(res.data.timeLimit * 60); // convert minutes -> seconds
@@ -60,7 +60,7 @@ const QuizAttempt = () => {
       const user = JSON.parse(localStorage.getItem("user"));
       const userId = user._id;
       const res = await axios.post(
-        `http://localhost:4000/api/quiz/${quizId}/submit`,
+        `https://quiz-master-j8er.onrender.com/api/quiz/${quizId}/submit`,
         {
           userId,
           answers: Object.keys(answers).map((qid) => ({

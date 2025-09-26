@@ -13,7 +13,10 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:4000/api/auth/signup", form);
+      await axios.post(
+        "https://quiz-master-j8er.onrender.com/api/auth/signup",
+        form
+      );
       // alert("Signup successful!");
       toast("Signup successful!");
       navigate("/login");
