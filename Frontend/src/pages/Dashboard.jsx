@@ -142,7 +142,7 @@ function Dashboard() {
                     </Link>
                     <Link
                       className="text-blue-500 underline"
-                      to={`http://localhost:5173/results/history/${quiz._id}`}
+                      to={`https://quiizz-master.vercel.app/results/history/${quiz._id}`}
                     >
                       History
                     </Link>
