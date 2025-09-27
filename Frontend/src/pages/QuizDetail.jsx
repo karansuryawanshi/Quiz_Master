@@ -6,6 +6,7 @@ import { toast } from "sonner";
 function QuizDetail() {
   const { id } = useParams(); // quizId from route
   const token = localStorage.getItem("token");
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
 
   const [jsonInput, setJsonInput] = useState("");
   const [questions, setQuestions] = useState([]);
@@ -24,12 +25,9 @@ function QuizDetail() {
   // Load questions
   useEffect(() => {
     const fetchQuestions = async () => {
-      const res = await axios.get(
-        `https://quiz-master-j8er.onrender.com/api/questions/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.get(`${dbUrl}/api/questions/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setQuestions(res.data);
     };
     fetchQuestions();
@@ -44,16 +42,22 @@ function QuizDetail() {
         return;
       }
 
+      // ✅ Convert correctAnswer from 1-based to 0-based
+      const normalized = parsed.map((q) => ({
+        ...q,
+        correctAnswer: q.correctAnswer - 1,
+      }));
+
       const res = await axios.post(
-        `https://quiz-master-j8er.onrender.com/api/questions/bulk/${id}`,
-        { questions: parsed },
+        `${dbUrl}/api/questions/bulk/${id}`,
+        { questions: normalized },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      setQuestions([...questions, ...res.data]); // append new questions
-      setJsonInput(""); // clear textarea
+      setQuestions([...questions, ...res.data]);
+      setJsonInput("");
       toast.success("Questions added successfully!");
     } catch (err) {
       console.error(err);
@@ -75,13 +79,9 @@ function QuizDetail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `https://quiz-master-j8er.onrender.com/api/questions/${id}`,
-        form,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.post(`${dbUrl}/api/questions/${id}`, form, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setQuestions([...questions, res.data]);
       setForm({ questionText: "", options: ["", ""], correctAnswer: 0 });
       toast("Question added!");
@@ -93,12 +93,9 @@ function QuizDetail() {
 
   const handleDelete = async (qid) => {
     try {
-      await axios.delete(
-        `https://quiz-master-j8er.onrender.com/api/questions/${qid}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${dbUrl}/api/questions/${qid}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setQuestions(questions.filter((q) => q._id !== qid));
       toast.success("Question deleted!");
     } catch (err) {
@@ -119,7 +116,7 @@ function QuizDetail() {
   const handleEditSave = async () => {
     try {
       const res = await axios.put(
-        `https://quiz-master-j8er.onrender.com/api/questions/${editId}`,
+        `${dbUrl}/api/questions/${editId}`,
         editForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );

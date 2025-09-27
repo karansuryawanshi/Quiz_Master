@@ -14,12 +14,12 @@ const QuizAttempt = () => {
   const [timeLeft, setTimeLeft] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
+
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await axios.get(
-          `https://quiz-master-j8er.onrender.com/api/quiz/${quizId}/questions`
-        );
+        const res = await axios.get(`${dbUrl}/api/quiz/${quizId}/questions`);
         setQuiz(res.data);
         setTimeLeft(res.data.timeLimit * 60); // convert minutes -> seconds
         setLoading(false);
@@ -59,16 +59,13 @@ const QuizAttempt = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const userId = user._id;
-      const res = await axios.post(
-        `https://quiz-master-j8er.onrender.com/api/quiz/${quizId}/submit`,
-        {
-          userId,
-          answers: Object.keys(answers).map((qid) => ({
-            questionId: qid,
-            selectedOption: answers[qid],
-          })),
-        }
-      );
+      const res = await axios.post(`${dbUrl}/api/quiz/${quizId}/submit`, {
+        userId,
+        answers: Object.keys(answers).map((qid) => ({
+          questionId: qid,
+          selectedOption: answers[qid],
+        })),
+      });
       toast("Test submitted Successfully");
 
       navigate(`/quiz/${quizId}/result`, { state: res.data });

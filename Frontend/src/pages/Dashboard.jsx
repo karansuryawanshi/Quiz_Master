@@ -12,19 +12,21 @@ function Dashboard() {
   const [quizzes, setQuizzes] = useState([]);
   const token = localStorage.getItem("token");
 
+  // const dbUrl = import.meta.env.VITE_DATABASE_URL;
+
   const user = JSON.parse(localStorage.getItem("user")); // convert string → object
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
+  const HostUrl = import.meta.env.VITE_HOST_URL;
+  // console.log("DB URL is :- ", dbUrl);
   // const userId = user._id;
 
   // Fetch quizzes on load
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const res = await axios.get(
-          "https://quiz-master-j8er.onrender.com/api/quiz",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get(`${dbUrl}/api/quiz`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setQuizzes(res.data);
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -39,13 +41,9 @@ function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "https://quiz-master-j8er.onrender.com/api/quiz",
-        form,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.post(`${dbUrl}/api/quiz`, form, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast("Quiz Created!");
       setQuizzes([...quizzes, res.data]);
       setForm({ title: "", description: "", timeLimit: "" });
@@ -142,7 +140,7 @@ function Dashboard() {
                     </Link>
                     <Link
                       className="text-blue-500 underline"
-                      to={`https://quiizz-master.vercel.app/results/history/${quiz._id}`}
+                      to={`${HostUrl}/results/history/${quiz._id}`}
                     >
                       History
                     </Link>

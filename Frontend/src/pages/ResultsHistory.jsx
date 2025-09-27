@@ -7,6 +7,9 @@ const ResultsHistory = () => {
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
+
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
+
   //   console.log("Params is :- ", params.id);
 
   useEffect(() => {
@@ -15,9 +18,7 @@ const ResultsHistory = () => {
         // const userId = localStorage.getItem("userId");
         const user = JSON.parse(localStorage.getItem("user")); // convert string → object
         const userId = user._id;
-        const res = await axios.get(
-          `https://quiz-master-j8er.onrender.com/api/quiz/results/${userId}`
-        );
+        const res = await axios.get(`${dbUrl}/api/quiz/results/${userId}`);
         setResults(res.data);
         setLoading(false);
       } catch (err) {

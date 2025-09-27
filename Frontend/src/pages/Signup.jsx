@@ -6,6 +6,7 @@ import { toast } from "sonner";
 function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const navigate = useNavigate();
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,10 +14,7 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "https://quiz-master-j8er.onrender.com/api/auth/signup",
-        form
-      );
+      await axios.post(`${dbUrl}/api/auth/signup`, form);
       // alert("Signup successful!");
       toast("Signup successful!");
       navigate("/login");

@@ -7,27 +7,24 @@ function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
+  // console.log("DB URL is :- ", dbUrl);
+
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "https://quiz-master-j8er.onrender.com/api/auth/login",
-        form
-      );
+      const res = await axios.post(`${dbUrl}/api/auth/login`, form);
 
       // Save token
       localStorage.setItem("token", res.data.token);
 
       // Fetch user details using token
-      const userRes = await axios.get(
-        "https://quiz-master-j8er.onrender.com/api/auth/me",
-        {
-          headers: { Authorization: `Bearer ${res.data.token}` },
-        }
-      );
+      const userRes = await axios.get(`${dbUrl}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${res.data.token}` },
+      });
 
       // Save user details in localStorage
       localStorage.setItem("user", JSON.stringify(userRes.data));

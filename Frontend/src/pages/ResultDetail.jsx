@@ -8,12 +8,12 @@ const ResultDetail = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const dbUrl = import.meta.env.VITE_DATABASE_URL;
+
   useEffect(() => {
     const fetchResult = async () => {
       try {
-        const res = await axios.get(
-          `https://quiz-master-j8er.onrender.com/api/quiz/result/${resultId}`
-        );
+        const res = await axios.get(`${dbUrl}/api/quiz/result/${resultId}`);
         setResult(res.data);
         setLoading(false);
       } catch (err) {
